@@ -4,9 +4,10 @@ $(document).ready(function () {
      insertInput(" ",false);
     });
 
-    $("#allInputs").click(function (event) {
+    $("#allInputs").on("click", ".z-wer", function (event) {
         var t = event.target;
-        t.closest("#wer").remove();
+
+        t.closest("div").remove();
     });
 
     $("#save").click(function () {
@@ -42,7 +43,7 @@ $(document).ready(function () {
         var input4 = document.createElement('input');
             input4.type = 'button';
             input4.value = 'del';
-            input4.id = 'del';
+            input4.class = 'z-wer';
 
         div.appendChild(input2);
         div.appendChild(input);
