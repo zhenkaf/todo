@@ -1,26 +1,22 @@
 $(document).ready(function () {
 
     $("#inputPlus").click(function (rowTemplate, che) {
-     insertInput(" ",false);
+        insertInput(" ",false);
+        localPlus(" ",false);
     });
 
     $("#allInputs").on("click", "#zwer", function (event) {
         var t = event.target;
-        t.closest("div").remove();
-    });
-
-    $("#save").click(function () {
+        t.closest("#wer").remove();
         var o = $("#allInputs").html();
-        console.log("#allInputs");
         var so = JSON.stringify(o);
-
         localStorage.setItem("key", so);
-        console.log(so);
     });
-    if(localStorage.getItem("key")) {
 
-        $("#allInputs").html(JSON.parse(localStorage.getItem("key")));
-    }
+   // if(localStorage.getItem("keyMas")) {
+
+     //   $("#allInputs").html(JSON.parse(localStorage.getItem("keyMas")));
+  //  }
 
     function insertInput (rowTemplate, che) {
         var div = document.createElement('div');
@@ -37,6 +33,7 @@ $(document).ready(function () {
         var input3 = document.createElement('input');
             input3.type = 'button';
             input3.value = 'save';
+            input3.id = 'sav';
 
 
         var input4 = document.createElement('input');
@@ -50,6 +47,34 @@ $(document).ready(function () {
         div.appendChild(input4);
 
         document.getElementById("allInputs").appendChild(div);
+    }
+
+    function localPlus(str, isDone) {
+        var locMas = [];
+        if (localStorage.getItem("keyMas") != undefined) {
+
+            var inLocMas = {
+                a : str,
+                b : isDone
+            };
+            var serialBack = JSON.parse(localStorage.getItem("keyMas"));
+            serialBack.push(inLocMas);
+            var sB = JSON.stringify(serialBack);
+            localStorage.setItem("keyMas", sB);
+            console.log(serialBack);
+        }
+
+        else {
+            var inLocMas = {
+                a : str,
+                b : isDone
+            };
+            locMas.push(inLocMas);
+            var serialM = JSON.stringify(locMas);
+            localStorage.setItem("keyMas", serialM);
+        }
+
+
     }
 
 });
