@@ -5,12 +5,8 @@ $(document).ready(function () {
         localPlus(" ",false);
     });
 
-    $("#allInputs").on("click", "#zwer", function (event) {
-        var t = event.target;
-        t.closest("#wer").remove();
-        var o = $("#allInputs").html();
-        var so = JSON.stringify(o);
-        localStorage.setItem("key", so);
+    $("#allInputs").on("click", "#delt", function (event) {
+        delParagraph(event);
     });
 
    // if(localStorage.getItem("keyMas")) {
@@ -19,10 +15,19 @@ $(document).ready(function () {
   //  }
 
     function insertInput (rowTemplate, che) {
-        var div = document.createElement('div');
-            div.id = 'wer';
+        $('#allInputs').append('<div id="inputs" class="input-s"></div>');
+        var a = $(".input-s").length;
+        $("#inputs").attr("id","inputs" + a);
 
-        var input = document.createElement('input');
+
+
+
+
+       // div.id = 'inputs' + $('div,#inputs').length;
+        //    div.class = 'input-s';
+
+
+       /* var input = document.createElement('input');
             input.type = 'text';
             input.value = rowTemplate;
 
@@ -39,18 +44,19 @@ $(document).ready(function () {
         var input4 = document.createElement('input');
             input4.type = 'button';
             input4.value = 'del';
-            input4.id = 'zwer';
+            input4.id = 'delt';*/
 
-        div.appendChild(input2);
-        div.appendChild(input);
-        div.appendChild(input3);
-        div.appendChild(input4);
+      //  div.appendChild(input2);
+      //  div.appendChild(input);
+      //  div.appendChild(input3);
+      //  div.appendChild(input4);
 
-        document.getElementById("allInputs").appendChild(div);
+      //  document.getElementById("allInputs").appendChild(div);
+
     }
 
     function localPlus(str, isDone) {
-        var locMas = [];
+
         if (localStorage.getItem("keyMas") != undefined) {
 
             var inLocMas = {
@@ -65,6 +71,7 @@ $(document).ready(function () {
         }
 
         else {
+            var locMas = [];
             var inLocMas = {
                 a : str,
                 b : isDone
@@ -73,8 +80,17 @@ $(document).ready(function () {
             var serialM = JSON.stringify(locMas);
             localStorage.setItem("keyMas", serialM);
         }
-
-
+        
+    }
+    
+    function delParagraph(event) {
+        var t = event.target;
+        var index = $("t").index();
+        alert(index);
+        t.closest("#inputs").remove();
+        var o = $("#allInputs").html();
+        var so = JSON.stringify(o);
+        localStorage.setItem("key", so);
     }
 
 });
