@@ -6,20 +6,20 @@ $(document).ready(function () {
     });
 
     $("#allInputs").on("click", ".del-t", function (event) {
-        delParagraph(event);
+
         delElemInLocStor(event);
+        delParagraph(event);
     });
     function insertInput (rowTemplate, che) {
-        var div = $("<div id = ''></div>");
+        var div = $("<div class = 'input-s'></div>");
             $(div).append("<input type = 'checkbox'></input>" +
                           "<input type = 'text'></input>" +
                           "<input type = 'button' value = 'save'></input>" +
                           "<input type = 'button' value = 'del' class = 'del-t'></input>"
             );
-        var countDiv = $(".input-s").length;
-        var divId = $(div).attr("id","" + countDiv);
-        $('#allInputs').append(divId);
-        $(div).addClass("input-s");
+
+        $('#allInputs').append(div);
+
 
             //input.value = rowTemplate;
             //input2.value = che;
@@ -47,18 +47,22 @@ $(document).ready(function () {
                 localStorage.setItem("keyMas", serialM);
         }
     }
-    function delParagraph(event) {
-        var t = event.target;
-            t.closest(".input-s").remove();
-    }
+
     function delElemInLocStor(event) {
-        var t = event.target;
-        var forLocStor = $(t.closest(".input-s")).attr("id");
+        var t = $(event.target).parents(".input-s");
+        var index = $(".input-s").index(t);
+        alert(index);
+
         var serialBack = JSON.parse(localStorage.getItem("keyMas"));
-        alert(forLocStor);
-        delete serialBack[forLocStor];
+
+        delete serialBack[index];
         var sB = JSON.stringify(serialBack);
         localStorage.setItem("keyMas", sB);
     }
-
+    function delParagraph(event) {
+        var t = $(event.target).parents(".input-s");
+        var index = $(".input-s").index(t);
+        alert(index);
+        t.remove();
+    }
 });
