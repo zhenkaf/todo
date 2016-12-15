@@ -55,7 +55,7 @@ $(document).ready(function () {
 
         var serialBack = JSON.parse(localStorage.getItem("keyMas"));
 
-        delete serialBack[index];
+        serialBack.splice(index, 1);
         var sB = JSON.stringify(serialBack);
         localStorage.setItem("keyMas", sB);
     }
