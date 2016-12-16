@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+    if(localStorage.getItem("keyMas")) {
+        var n =JSON.parse(localStorage.getItem("keyMas"));
+            for(i = 0; i<n.length; i++){
+                insertInput("",false);
+        }
+    }
+
     $("#inputPlus").click(function (rowTemplate, che) {
         insertInput("",false);
         localPlus("",false);
