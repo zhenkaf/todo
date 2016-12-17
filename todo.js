@@ -3,11 +3,9 @@ $(document).ready(function () {
     if(localStorage.getItem("keyMas")) {
         var n = JSON.parse(localStorage.getItem("keyMas"));
             for(i = 0; i<n.length; i++){
-              var rowTemplate = n[i].a;
-                var che = n[i].b;
-                alert (rowTemplate);
-                alert (che);
-                insertInput(rowTemplate, che);
+              var z = n[i].a;
+                var x = n[i].b;
+                insertInput(z, x);
             }
     }
 
@@ -23,12 +21,17 @@ $(document).ready(function () {
     });
     function insertInput (rowTemplate, che) {
         var div = $("<div class = 'input-s'></div>");
-            $(div).append("<input type = 'checkbox' class = 'checkbo-x'></input>" +
-                          "<input type = 'text' class = 'tex-t'></input>" +
-                          "<input type = 'button' value = 'save' class = 'sav-e'></input>" +
-                          "<input type = 'button' value = 'del' class = 'del-t'></input>"
-            );
-        $('#allInputs').append(div);
+        var ch = $("<input type = 'checkbox' class = 'checkbo-x'></input>");
+        var r = $("<input type = 'text' class = 'tex-t'></input>");
+        var save = $("<input type = 'button' value = 'save' class = 'sav-e'></input>");
+        var del = $("<input type = 'button' value = 'del' class = 'del-t'></input>");
+        $(r).val(rowTemplate);
+        $(ch).prop('checked', che);
+            $(div).append(ch);
+            $(div).append(r);
+            $(div).append(save);
+            $(div).append(del);
+            $('#allInputs').append(div);
 
     }
     function localPlus(str, isDone) {
