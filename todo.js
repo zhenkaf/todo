@@ -1,178 +1,116 @@
 $(document).ready(function () {
-
-    function howManyShow (){
-        var trcount = 0;
-        var flcount = 0;
-        if(localStorage.getItem("howChe")) {
-            var po = JSON.parse(localStorage.getItem("howChe"));
-            for(i = 0; i<po.length; i++){
-                var trorfl = po[i].sd;
-
-
-                if (trorfl == false){
-                    flcount++;
-                }
-                $("#result1").val(flcount);
-
-                if (trorfl == true){
-                    trcount++;
-                }
-                $("#result2").val(trcount);
-
-            }
-        }
-
+    if(localStorage.getItem("keyMas")) {
+        howManyCheckeds();
     }
     if(localStorage.getItem("keyMas")) {
-        var n = JSON.parse(localStorage.getItem("keyMas"));
-            for(i = 0; i<n.length; i++){
-              var z = n[i].a;
-                var x = n[i].b;
-                insertInput(z, x);
-            }
+        var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
+        for(i = 0; i < arrObjects.length; i++){
+            var valPropertyRow = arrObjects[i].propertyRow;
+            var valPropertyChe = arrObjects[i].propertyChe;
+            insertInput(valPropertyRow, valPropertyChe);
+        }
     }
-    if(localStorage.getItem("howChe")) {
-        howManyShow();
+    function howManyCheckeds (){
+        var trueCountCheckeds = 0;
+        var falseCountCheckeds = 0;
+        if(localStorage.getItem("keyMas")) {
+            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
+            for(i = 0; i < arrObjects.length; i++){
+                var valPropertyChe = arrObjects[i].propertyChe;
+                if (valPropertyChe == false){
+                    falseCountCheckeds++;
+                }
+                if (valPropertyChe == true){
+                    trueCountCheckeds++;
+                }
+                    $("#result1").html(falseCountCheckeds);
+                    $("#result2").html(trueCountCheckeds);
+            }
+        }
     }
     $("#inputPlus").click(function (rowTemplate, che) {
         insertInput("",false);
-        localPlus("",false);
-        howMany(false);
-        howManyShow();
+        insertInputInLocStor("",false);
+        howManyCheckeds();
     });
-
-    $("#allInputs").on("click", ".del-t", function (event) {
-        delElemInLocStor(event);
-        delChekLocStor(event);
-        delParagraph(event);
-        howManyShow();
-        if(localStorage.getItem("howChe")) {
-            var po = JSON.parse(localStorage.getItem("howChe"));
-            if(po.length == 0){
-                $("#result1").val(0);
-                $("#result2").val(0);
-            }
-
-        }
-
-    });
-
     function insertInput (rowTemplate, che) {
-        var div = $("<div class = 'input-s'></div>");
-        var ch = $("<input type = 'checkbox' class = 'checkbo-x'></input>");
-        var r = $("<input type = 'text' class = 'tex-t'></input>");
+        var container = $("<div class = 'containe-r'></div>");
+        var chbox = $("<input type = 'checkbox' class = 'checkbo-x'></input>");
+        var row = $("<input type = 'text' class = 'tex-t'></input>");
         var save = $("<input type = 'button' value = 'save' class = 'sav-e'></input>");
-        var del = $("<input type = 'button' value = 'del' class = 'del-t'></input>");
-        $(r).val(rowTemplate);
-        $(ch).prop('checked', che);
-            $(div).append(ch);
-            $(div).append(r);
-            $(div).append(save);
-            $(div).append(del);
-            $('#allInputs').append(div);
+        var del = $("<input type = 'button' value = 'del' class = 'de-l'></input>");
+            $(row).val(rowTemplate);
+            $(chbox).prop('checked', che);
+            $(container).append(chbox);
+            $(container).append(row);
+            $(container).append(save);
+            $(container).append(del);
+            $('#allInputs').append(container);
     }
-    function localPlus(str, isDone) {
+    function insertInputInLocStor(str, isDone) {
         if (localStorage.getItem("keyMas") != undefined) {
             var inLocMas = {
-                a : str,
-                b : isDone
+                propertyRow : str,
+                propertyChe : isDone
             };
-            var serialBack = JSON.parse(localStorage.getItem("keyMas"));
-                serialBack.push(inLocMas);
-            var sB = JSON.stringify(serialBack);
-                localStorage.setItem("keyMas", sB);
+            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
+                arrObjects.push(inLocMas);
+            var serialArrObjects = JSON.stringify(arrObjects);
+                localStorage.setItem("keyMas", serialArrObjects);
         }
         else {
-            var locMas = [];
+            var locStorMas = [];
             var inLocMas = {
-                a : str,
-                b : isDone
+                propertyRow : str,
+                propertyChe : isDone
             };
-                locMas.push(inLocMas);
-            var serialM = JSON.stringify(locMas);
-                localStorage.setItem("keyMas", serialM);
+            locStorMas.push(inLocMas);
+            var arrObjects = JSON.stringify(locStorMas);
+                localStorage.setItem("keyMas", arrObjects);
         }
     }
+    $("#allInputs").on("click", ".de-l", function (event) {
+        delElemInLocStor(event);
+        delRow(event);
+        howManyCheckeds();
+        if(localStorage.getItem("keyMas")) {
+            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
+            if (arrObjects.length == 0) {
+                $("#result1").html(0);
+                $("#result2").html(0);
+            }
+        }
+    });
     function delElemInLocStor(event) {
-        var t = $(event.target).parents(".input-s");
-        var index = $(".input-s").index(t);
-        var serialBack = JSON.parse(localStorage.getItem("keyMas"));
-        serialBack.splice(index, 1);
-        var sB = JSON.stringify(serialBack);
-        localStorage.setItem("keyMas", sB);
+        var parentElem = $(event.target).parents(".containe-r");
+        var indexParentElem = $(".containe-r").index(parentElem);
+        var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
+            arrObjects.splice(indexParentElem, 1);
+        var serialArrObjects = JSON.stringify(arrObjects);
+            localStorage.setItem("keyMas", serialArrObjects);
     }
-    function delParagraph(event) {
-        var t = $(event.target).parents(".input-s");
-        var index = $(".input-s").index(t);
-        t.remove();
+    function delRow(event) {
+        var parentRow = $(event.target).parents(".containe-r");
+            parentRow.remove();
     }
     $("#allInputs").on("click", ".sav-e", function (event) {
         saveInfo(event);
-        saveCheck(event);
-        howManyShow();
+        howManyCheckeds();
     });
     function saveInfo(event) {
-        var ourClick = $(event.target).parents(".input-s");
-        var OurDiv = ourClick.closest(".input-s");
-        var indexSave = $(".input-s").index(ourClick);
-        var st = $(OurDiv).contents(".tex-t").val();
-        var v = $(OurDiv).contents(".checkbo-x");
-        var check = $(v).is(':checked');
-        var obj = {
-            a : st,
-            b : check
+        var ourClick = $(event.target).parents(".containe-r");
+        var ourContainer = ourClick.closest(".containe-r");
+        var indexSave = $(".containe-r").index(ourClick);
+        var saveRow = $(ourContainer).contents(".tex-t").val();
+        var ourCheck = $(ourContainer).contents(".checkbo-x");
+        var check = $(ourCheck).is(':checked');
+        var ourObj = {
+            propertyRow : saveRow,
+            propertyChe : check
         };
-        var n =JSON.parse(localStorage.getItem("keyMas"));
-         n.splice(indexSave, 1, obj);
-        var newN = JSON.stringify(n);
-        localStorage.setItem("keyMas", newN);
+        var arrObjects =JSON.parse(localStorage.getItem("keyMas"));
+            arrObjects.splice(indexSave, 1, ourObj);
+        var serialArrObjects = JSON.stringify(arrObjects);
+            localStorage.setItem("keyMas", serialArrObjects);
     }
-
-
-    function howMany(isDon){
-        if (localStorage.getItem("howChe") != undefined) {
-            var inchecks = {
-                sd : isDon
-            };
-            var serialChecks = JSON.parse(localStorage.getItem("howChe"));
-            serialChecks.push(inchecks);
-            var sC = JSON.stringify(serialChecks);
-            localStorage.setItem("howChe", sC);
-        }
-        else {
-            var checks = [];
-            var inchecks = {
-                sd : isDon
-            };
-            checks.push(inchecks);
-            var serialC = JSON.stringify(checks);
-            localStorage.setItem("howChe", serialC);
-        }
-    }
-    function delChekLocStor(event) {
-        var tt = $(event.target).parents(".input-s");
-        var index = $(".input-s").index(tt);
-        var serialChecks = JSON.parse(localStorage.getItem("howChe"));
-        serialChecks.splice(index, 1);
-        var sC = JSON.stringify(serialChecks);
-        localStorage.setItem("howChe", sC);
-    }
-
-    function saveCheck(event) {
-        var ourClick = $(event.target).parents(".input-s");
-        var OurDiv = ourClick.closest(".input-s");
-        var indexSave = $(".input-s").index(ourClick);
-
-        var v = $(OurDiv).contents(".checkbo-x");
-        var isDon = $(v).is(':checked');
-        var inchecks = {
-            sd : isDon
-        };
-        var n =JSON.parse(localStorage.getItem("howChe"));
-        n.splice(indexSave, 1, inchecks);
-        var newN = JSON.stringify(n);
-        localStorage.setItem("howChe", newN);
-    }
-
-
 });
