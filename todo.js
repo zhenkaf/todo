@@ -20,7 +20,7 @@ $(document).ready(function () {
                 if (valPropertyChe == false){
                     falseCountCheckeds++;
                 }
-                if (valPropertyChe == true){
+                else {
                     trueCountCheckeds++;
                 }
                     $("#result1").html(falseCountCheckeds);
