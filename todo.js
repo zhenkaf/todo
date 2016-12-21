@@ -14,21 +14,21 @@ $(document).ready(function () {
         var trueCountCheckeds = 0;
         var falseCountCheckeds = 0;
         if(localStorage.getItem("keyMas")) {
-            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
-            for(i = 0; i < arrObjects.length; i++){
-                var valPropertyChe = arrObjects[i].propertyChe;
+            var todoRows = JSON.parse(localStorage.getItem("keyMas"));
+            for(i = 0; i < todoRows.length; i++){
+                var valPropertyChe = todoRows[i].propertyChe;
                 if (valPropertyChe == false){
                     falseCountCheckeds++;
                 }
                 else {
                     trueCountCheckeds++;
                 }
-                    $("#result1").html(falseCountCheckeds);
-                    $("#result2").html(trueCountCheckeds);
             }
+            $("#result1").html(falseCountCheckeds);
+            $("#result2").html(trueCountCheckeds);
         }
     }
-    $("#inputPlus").click(function (rowTemplate, che) {
+    $("#inputPlus").click(function () {
         insertInput("",false);
         insertInputInLocStor("",false);
         howManyCheckeds();
@@ -53,10 +53,10 @@ $(document).ready(function () {
                 propertyRow : str,
                 propertyChe : isDone
             };
-            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
-                arrObjects.push(inLocMas);
-            var serialArrObjects = JSON.stringify(arrObjects);
-                localStorage.setItem("keyMas", serialArrObjects);
+            var todoRows = JSON.parse(localStorage.getItem("keyMas"));
+            todoRows.push(inLocMas);
+            var serialTodoRows = JSON.stringify(todoRows);
+                localStorage.setItem("keyMas", serialTodoRows);
         }
         else {
             var locStorMas = [];
@@ -65,8 +65,8 @@ $(document).ready(function () {
                 propertyChe : isDone
             };
             locStorMas.push(inLocMas);
-            var arrObjects = JSON.stringify(locStorMas);
-                localStorage.setItem("keyMas", arrObjects);
+            var todoRows = JSON.stringify(locStorMas);
+                localStorage.setItem("keyMas", todoRows);
         }
     }
     $("#allInputs").on("click", ".de-l", function (event) {
@@ -74,8 +74,8 @@ $(document).ready(function () {
         delRow(event);
         howManyCheckeds();
         if(localStorage.getItem("keyMas")) {
-            var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
-            if (arrObjects.length == 0) {
+            var todoRows = JSON.parse(localStorage.getItem("keyMas"));
+            if (todoRows.length == 0) {
                 $("#result1").html(0);
                 $("#result2").html(0);
             }
@@ -84,10 +84,10 @@ $(document).ready(function () {
     function delElemInLocStor(event) {
         var parentElem = $(event.target).parents(".containe-r");
         var indexParentElem = $(".containe-r").index(parentElem);
-        var arrObjects = JSON.parse(localStorage.getItem("keyMas"));
-            arrObjects.splice(indexParentElem, 1);
-        var serialArrObjects = JSON.stringify(arrObjects);
-            localStorage.setItem("keyMas", serialArrObjects);
+        var todoRows = JSON.parse(localStorage.getItem("keyMas"));
+            todoRows.splice(indexParentElem, 1);
+        var serialTodoRows = JSON.stringify(todoRows);
+            localStorage.setItem("keyMas", serialTodoRows);
     }
     function delRow(event) {
         var parentRow = $(event.target).parents(".containe-r");
@@ -108,9 +108,37 @@ $(document).ready(function () {
             propertyRow : saveRow,
             propertyChe : check
         };
-        var arrObjects =JSON.parse(localStorage.getItem("keyMas"));
-            arrObjects.splice(indexSave, 1, ourObj);
-        var serialArrObjects = JSON.stringify(arrObjects);
-            localStorage.setItem("keyMas", serialArrObjects);
+        var todoRows =JSON.parse(localStorage.getItem("keyMas"));
+            todoRows.splice(indexSave, 1, ourObj);
+        var serialTodoRows = JSON.stringify(todoRows);
+            localStorage.setItem("keyMas", serialTodoRows);
     }
+
+
+    $("#allInputs").on("mouseover", ".containe-r", function (event) {
+        getInfoFromElem();
+    });
+    function getInfoFromElem() {
+        var mouseOverRow = $(event.target).parents(".containe-r");
+        var getOurRow = $(mouseOverRow).contents(".tex-t").val();
+        var ourCheck = $(mouseOverRow).contents(".checkbo-x");
+        var check = $(ourCheck).is(":checked");
+            if(check){
+                var condition = "Миссия выполнена";
+            }
+            else {
+                var condition = "В процессе";
+            }
+        var mission = getOurRow;
+        $("#test").append(condition + '<br></br>');
+        $("#test").append(mission);
+
+        $("#test").show();
+    }
+
+    $("#allInputs").on("mouseout", ".containe-r", function (event) {
+        $("#test").empty();
+        $("#test").hide();
+    });
+
 });
