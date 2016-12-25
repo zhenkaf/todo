@@ -37,13 +37,11 @@ $(document).ready(function () {
         var container = $("<div class = 'containe-r'></div>");
         var chbox = $("<input type = 'checkbox' class = 'checkbo-x'></input>");
         var row = $("<input type = 'text' class = 'tex-t'></input>");
-        var save = $("<input type = 'button' value = 'save' class = 'sav-e'></input>");
         var del = $("<input type = 'button' value = 'del' class = 'de-l'></input>");
             $(row).val(rowTemplate);
             $(chbox).prop('checked', che);
             $(container).append(chbox);
             $(container).append(row);
-            $(container).append(save);
             $(container).append(del);
             $('#allInputs').append(container);
     }
@@ -54,7 +52,7 @@ $(document).ready(function () {
                 propertyChe : isDone
             };
             var todoRows = JSON.parse(localStorage.getItem("keyMas"));
-            todoRows.push(inLocMas);
+                todoRows.push(inLocMas);
             var serialTodoRows = JSON.stringify(todoRows);
                 localStorage.setItem("keyMas", serialTodoRows);
         }
@@ -64,7 +62,7 @@ $(document).ready(function () {
                 propertyRow : str,
                 propertyChe : isDone
             };
-            locStorMas.push(inLocMas);
+                locStorMas.push(inLocMas);
             var todoRows = JSON.stringify(locStorMas);
                 localStorage.setItem("keyMas", todoRows);
         }
@@ -93,12 +91,16 @@ $(document).ready(function () {
         var parentRow = $(event.target).parents(".containe-r");
             parentRow.remove();
     }
-    $("#allInputs").on("click", ".sav-e", function (event) {
-        saveInfo(event);
-        howManyCheckeds();
-    });
-    function saveInfo(event) {
+    $("#allInputs").on("change", ".tex-t", function (event) {
         var ourClick = $(event.target).parents(".containe-r");
+        saveRowChk(ourClick);
+    });
+    $("#allInputs").on("click", '.checkbo-x', function (event) {
+        var ourClick = $(event.target).parents(".containe-r");
+        saveRowChk(ourClick);
+    });
+    function saveRowChk(row) {
+        var ourClick = row;
         var ourContainer = ourClick.closest(".containe-r");
         var indexSave = $(".containe-r").index(ourClick);
         var saveRow = $(ourContainer).contents(".tex-t").val();
@@ -112,13 +114,12 @@ $(document).ready(function () {
             todoRows.splice(indexSave, 1, ourObj);
         var serialTodoRows = JSON.stringify(todoRows);
             localStorage.setItem("keyMas", serialTodoRows);
+        howManyCheckeds();
     }
-
-
     $("#allInputs").on("mouseover", ".containe-r", function (event) {
-        getInfoFromElem();
+        getInfoFromElem(event);
     });
-    function getInfoFromElem() {
+    function getInfoFromElem(event) {
         var mouseOverRow = $(event.target).parents(".containe-r");
         var getOurRow = $(mouseOverRow).contents(".tex-t").val();
         var ourCheck = $(mouseOverRow).contents(".checkbo-x");
@@ -130,15 +131,12 @@ $(document).ready(function () {
                 var condition = "В процессе";
             }
         var mission = getOurRow;
-        $("#test").append(condition + '<br></br>');
+        $("#test").append(condition + '<br />');
         $("#test").append(mission);
-
         $("#test").show();
     }
-
-    $("#allInputs").on("mouseout", ".containe-r", function (event) {
+    $("#allInputs").on("mouseout", ".containe-r", function () {
         $("#test").empty();
         $("#test").hide();
     });
-
 });
